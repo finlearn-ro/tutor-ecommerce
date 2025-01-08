@@ -19,7 +19,7 @@ config = {
     "defaults": {
         "VERSION": __version__,
         "API_TIMEOUT": 5,
-        "CURRENCY": "USD",
+        "CURRENCY": "RON",
         "DOCKER_IMAGE": "{{ DOCKER_REGISTRY }}overhangio/openedx-ecommerce:{{ ECOMMERCE_VERSION }}",
         "WORKER_DOCKER_IMAGE": "{{ DOCKER_REGISTRY }}overhangio/openedx-ecommerce-worker:{{ ECOMMERCE_VERSION }}",
         "EXTRA_PIP_REQUIREMENTS": [],
@@ -55,10 +55,28 @@ config = {
                 "error_url": "/checkout/error/",
                 "receipt_url": "/checkout/receipt/",
             },
+            'stripe': {
+                # Stripe API version to use.
+                'api_version': '2024-12-18.acacia',
+                # Send anonymous latency metrics to Stripe.
+                'enable_telemetry': 'true',
+                # Stripe client logging level. None will default to INFO.
+                'log_level': 'INFO',
+                # How many times to automatically retry requests. None means no retries.
+                'max_network_retries': '',
+                # Send requests somewhere else instead of Stripe. May be useful for testing.
+                'proxy': '',
+                # Get your keys from https://dashboard.stripe.com/account/apikeys.
+                # Remember to toggle test data to see keys for use with test mode
+                'publishable_key': 'pk_test_',
+                'secret_key': 'sk_test_',
+                # Get the signing secret of your webhook from https://dashboard.stripe.com/webhooks
+                'webhook_endpoint_secret': '',
+            },
         },
         "ENABLE_IDENTITY_VERIFICATION": True,
-        "ENABLED_PAYMENT_PROCESSORS": ["cybersource", "paypal"],
-        "ENABLED_CLIENT_SIDE_PAYMENT_PROCESSORS": ["cybersource"],
+        "ENABLED_PAYMENT_PROCESSORS": ["stripe"],
+        "ENABLED_CLIENT_SIDE_PAYMENT_PROCESSORS": ["stripe"],
         "EXTRA_PAYMENT_PROCESSOR_CLASSES": [],
         "EXTRA_PAYMENT_PROCESSOR_URLS": {},
     },
