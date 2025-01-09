@@ -11,14 +11,14 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 ###### Checkout code
 FROM minimal AS checkout
 
-ARG ECOMMERCE_REPOSITORY=https://github.com/openedx-unsupported/ecommerce.git
-ARG ECOMMERCE_VERSION='open-release/sumac.master'
+ARG ECOMMERCE_REPOSITORY=https://github.com/finlearn-ro/ecommerce
+ARG ECOMMERCE_VERSION='master'
 RUN mkdir -p /openedx/ecommerce && \
     git clone $ECOMMERCE_REPOSITORY --branch $ECOMMERCE_VERSION --depth 1 /openedx/ecommerce
 
 # Identify tutor user to cherry-pick commits
 RUN git config --global user.email "tutor@overhang.io" \
-  && git config --global user.name "Tutor"
+    && git config --global user.name "Tutor"
 
 ##### Empty layer with just the repo at the root.
 # This is useful when overriding the build context with a host repo:
@@ -87,8 +87,8 @@ RUN --mount=type=cache,target=/openedx/.cache/pip,sharing=shared,uid=${APP_USER_
 # Install private requirements: this is useful for installing custom payment processors.
 COPY --chown=app:app ./requirements/ /openedx/requirements
 RUN cd /openedx/requirements/ \
-  && touch ./private.txt \
-  && pip install -r ./private.txt
+    && touch ./private.txt \
+    && pip install -r ./private.txt
 
 {% for extra_requirement in ECOMMERCE_EXTRA_PIP_REQUIREMENTS %}RUN --mount=type=cache,target=/openedx/.cache/pip,sharing=shared,uid=${APP_USER_ID} pip install '{{ extra_requirement }}'
 {% endfor %}
