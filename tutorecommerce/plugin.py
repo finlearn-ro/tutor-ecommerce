@@ -95,8 +95,8 @@ def _add_ecommerce_mfe_apps(
                 "port": 7296,
             },
             "payment": {
-                "repository": "https://github.com/openedx/frontend-app-payment.git",
-                "version": "open-release/sumac.master",
+                "repository": "https://github.com/finlearn-ro/frontend-app-payment.git",
+                "version": "master",
                 "port": 1998,
             },
         }
